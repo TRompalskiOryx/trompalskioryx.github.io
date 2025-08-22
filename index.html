@@ -1,0 +1,137 @@
+
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Porównanie: Zia Chatbot vs Asystent RAG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f8f9fa; --fg:#212529; --muted:#6c757d;
+      --border:#dee2e6; --white:#fff;
+      --ok:#198754; --warn:#fd7e14; --no:#dc3545;
+    }
+    body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--fg);margin:0;padding:24px;}
+    h1{margin:0 0 6px 0;font-weight:600;}
+    .subtitle{color:var(--muted);margin:0 0 20px 0;}
+    table{width:100%;border-collapse:collapse;background:var(--white);}
+    th,td{border:1px solid var(--border);padding:10px;vertical-align:top;text-align:left;}
+    thead th{background:#eef1f4;}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;color:#fff}
+    .ok{background:var(--ok);} .warn{background:var(--warn);} .no{background:var(--no);}
+    .legend{font-size:13px;color:var(--muted);margin-top:8px}
+    .foot{margin-top:20px;font-size:13px;color:var(--muted);}
+    @media (max-width:900px){
+      table, thead, tbody, th, td, tr{display:block}
+      thead{display:none}
+      tr{margin-bottom:12px;border:1px solid var(--border);background:var(--white)}
+      td{border:none;border-bottom:1px solid var(--border)}
+      td::before{content:attr(data-label) ": ";font-weight:600;display:block;margin-bottom:4px;color:#111}
+    }
+  </style>
+</head>
+<body>
+  <h1>Zia Chatbot (SDP On‑Prem) vs. Asystent RAG</h1>
+  <p class="subtitle">Aktualizacja porównania funkcji na podstawie oficjalnych materiałów ManageEngine.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Funkcja</th>
+        <th>Opis</th>
+        <th>Zia Chatbot</th>
+        <th>Asystent RAG</th>
+        <th>Werdykt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Funkcja"><b>Interfejs i kanały</b><br><small>web, mobile, voice, widget</small></td>
+        <td data-label="Opis">Dostęp i obsługa w wielu kanałach (portal WWW, aplikacja mobilna, głos, widget/intranet).</td>
+        <td data-label="Zia"><span class="badge ok">✅</span> Web + mobile + Zia Voice + widget</td>
+        <td data-label="RAG"><span class="badge ok">✅</span> Dowolny kanał (widget, Teams/Slack, voice/API)</td>
+        <td data-label="Werdykt"><b>Remis</b> – Zia ma natywne kanały; RAG daje pełną elastyczność wdrożenia.</td>
+      </tr>
+      <tr>
+        <td><b>Operacje na zgłoszeniach</b></td>
+        <td>Tworzenie, modyfikacja, przypisanie, zadania, akceptacje z poziomu rozmowy.</td>
+        <td><span class="badge ok">✅</span> Predefiniowane akcje ITSM (twórz/modyfikuj/akceptuj)</td>
+        <td><span class="badge ok">✅</span> Tak (przez API/komendy); zakres zależny od integracji</td>
+        <td><b>Remis</b> – Zia natywnie w SDP; RAG elastycznie przez API.</td>
+      </tr>
+      <tr>
+        <td><b>Samoobsługa i KB</b></td>
+        <td>Rekomendacje artykułów oraz odpowiedzi generowane na podstawie wiedzy.</td>
+        <td><span class="badge ok">✅</span> KB + GenAI (RAG z cytatami)</td>
+        <td><span class="badge ok">✅</span> KB + RAG nad dokumentami klienta</td>
+        <td><b>Remis</b> – obie strony oferują GenAI + KB; różni się źródło i kontrola danych.</td>
+      </tr>
+      <tr>
+        <td><b>NL‑wyszukiwanie katalogu usług</b></td>
+        <td>Znajdowanie właściwej usługi po opisie w języku naturalnym i CTA.</td>
+        <td><span class="badge warn">🟡</span> Konwersacyjny dostęp/operacje w katalogu</td>
+        <td><span class="badge ok">✅</span> Semantyczne wyszukiwanie pozycji katalogu</td>
+        <td><b>Przewaga RAG</b> – lepsze dopasowanie intencji do pozycji katalogu.</td>
+      </tr>
+      <tr>
+        <td><b>Podsumowanie zgłoszeń</b></td>
+        <td>Streszczenie opisu, historii/konwersacji, kluczowych informacji.</td>
+        <td><span class="badge warn">🟡</span> Szybkie raporty/insighty z ticketów</td>
+        <td><span class="badge ok">✅</span> Podsumowania Issue/Steps/Outcome + Worklog</td>
+        <td><b>RAG wygrywa</b> – bogatsze, ustrukturyzowane summary.</td>
+      </tr>
+      <tr>
+        <td><b>Wsparcie operatora</b></td>
+        <td>Checklista kroków, podobne incydenty, kontekstowe podpowiedzi.</td>
+        <td><span class="badge warn">🟡</span> Możliwe przez flowy/akcje</td>
+        <td><span class="badge ok">✅</span> Automatyczne checklisty + podobne bilety</td>
+        <td><b>RAG wygrywa</b> – aktywne podpowiedzi w locie.</td>
+      </tr>
+      <tr>
+        <td><b>Duplikaty / Major Incident</b></td>
+        <td>Grupowanie podobnych zgłoszeń, wykrywanie MI.</td>
+        <td><span class="badge no">❌</span> Brak natywnej detekcji</td>
+        <td><span class="badge warn">🟡</span> Możliwe (embeddingi/klastry)</td>
+        <td><b>Przewaga RAG</b> – możliwość automatycznej detekcji po wdrożeniu.</td>
+      </tr>
+      <tr>
+        <td><b>Korelacja zmian → incydenty (24–48h)</b></td>
+        <td>Ranking „podejrzanych” zmian powiązanych z awarią.</td>
+        <td><span class="badge no">❌</span> Brak</td>
+        <td><span class="badge warn">🟡</span> Gotowe fundamenty; wymaga modułu korelacji</td>
+        <td><b>Przewaga RAG</b> – inteligentne hipotezy z uzasadnieniem.</td>
+      </tr>
+      <tr>
+        <td><b>Raporty NL (ad‑hoc)</b></td>
+        <td>„Ile High dziś?”, „Które przekroczyły SLA?” przez rozmowę.</td>
+        <td><span class="badge ok">✅</span> Proste raporty/quick insights</td>
+        <td><span class="badge ok">✅</span> Pełne zapytania ad‑hoc do danych ITSM</td>
+        <td><b>RAG wygrywa</b> – większa elastyczność zapytań.</td>
+      </tr>
+      <tr>
+        <td><b>Personalizacja / rozbudowa</b></td>
+        <td>Narzędzia do tworzenia scenariuszy i akcji, webhooki/API.</td>
+        <td><span class="badge ok">✅</span> Zia Developer Console + Actions Gallery</td>
+        <td><span class="badge ok">✅</span> Pełny custom (API, własne moduły)</td>
+        <td><b>Remis</b> – Zia: szybko/low‑code; RAG: pełna swoboda (wymaga dev).</td>
+      </tr>
+      <tr>
+        <td><b>Wielojęzyczność</b></td>
+        <td>Rozumienie/odpowiedzi w wielu językach.</td>
+        <td><span class="badge warn">🟡</span> Dokumentacja akcentuje EN; inne języki zależnie od konfiguracji</td>
+        <td><span class="badge ok">✅</span> Modele wielojęzyczne (PL/DE/EN)</td>
+        <td><b>Przewaga RAG</b> – gwarantowana obsługa PL/DE przy doborze modelu.</td>
+      </tr>
+      <tr>
+        <td><b>Bezpieczeństwo / PII</b></td>
+        <td>Kontrola danych, maskowanie PII, tryb on‑prem.</td>
+        <td><span class="badge warn">🟡</span> On‑prem dostępny; brak natywnej redakcji PII</td>
+        <td><span class="badge warn">🟡</span> On‑prem + moduł redakcji PII (konfigurowalny)</td>
+        <td><b>Przewaga RAG</b> – większa kontrola strumienia danych/PII.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="legend"><b>Legenda:</b> <span class="badge ok">✅</span> dostępne &nbsp; <span class="badge warn">🟡</span> częściowo / zależne od konfiguracji &nbsp; <span class="badge no">❌</span> brak</p>
+  <p class="foot">Uwaga: Zia dostępna na Cloud i On‑Prem; szczegóły funkcji zależą od wersji i konfiguracji instancji. Niniejsze porównanie jest skrótem pod rozmowy handlowe.</p>
+</body>
+</html>
