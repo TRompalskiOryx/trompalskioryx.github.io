@@ -52,7 +52,6 @@
     summary{cursor:pointer;color:var(--accent)}
     summary::-webkit-details-marker{display:none}
 
-    /* Werdykt */
     .verdict{margin-top:24px}
     .score-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;overflow:auto}
     .scores{width:100%;min-width:1020px;border-collapse:separate;border-spacing:0}
@@ -80,7 +79,7 @@
 
     <div class="legend">
       <span>✅ funkcja dostępna</span>
-      <span>🟡 częściowo / zależnie od konfiguracji</span>
+      <span>🟡 częściowo / zależnie od wersji lub integracji</span>
       <span>❌ brak w standardzie</span>
     </div>
 
@@ -91,7 +90,6 @@
       <a class="btn" href="#verdict">Werdykt końcowy</a>
     </div>
 
-    <!-- JAK DZIAŁA RAG -->
     <h2 id="how">Jak działa Asystent RAG w ServiceDesk Plus – w praktyce</h2>
     <div class="cards">
       <div class="card">
@@ -118,7 +116,6 @@
 
     <div class="hr"></div>
 
-    <!-- 4 KLUCZOWE FUNKCJE RAG -->
     <h2 id="core4">4 kluczowe funkcje RAG — językiem korzyści</h2>
     <div class="cards">
       <div class="card">
@@ -145,7 +142,6 @@
 
     <div class="hr"></div>
 
-    <!-- TABELA PORÓWNAWCZA -->
     <div id="table" class="table-wrap">
       <table>
         <colgroup>
@@ -174,19 +170,28 @@
 
           <tr>
             <td><b>Kanały kontaktu</b></td>
-            <td>Portal web i aplikacja mobilna; dodatkowo widżet do osadzenia.</td>
-            <td><span class="badge ok">✅</span> Web, mobile, widżet.</td>
+            <td>Portal web i aplikacja mobilna; dodatkowo (często) widżet.</td>
+            <td><span class="badge warn">🟡</span> Web, mobile; widżet intranetu <span class="note">— zależne od wersji</span></td>
             <td><span class="badge no">❌</span> Brak warstwy konwersacyjnej.</td>
-            <td class="why"><b>Biz value:</b> wsparcie „tam, gdzie jest użytkownik”. <i>Start rozmowy z intranetu bez logowania do SDP.</i></td>
+            <td class="why"><b>Biz value:</b> wsparcie „tam, gdzie jest użytkownik”.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Interakcja głosowa (mobile)</b></td>
-            <td>Rozmowa z botem głosem w aplikacji mobilnej (Zia Voice).</td>
-            <td><span class="badge ok">✅</span> Dostępne.</td>
+            <td>Rozmowa z botem głosem w aplikacji mobilnej.</td>
+            <td><span class="badge ok">✅</span> Zia Voice w mobile.</td>
             <td><span class="badge no">❌</span> Nie dotyczy.</td>
-            <td class="why"><b>Biz value:</b> technik w terenie dyktuje notatkę lub tworzy zgłoszenie bez pisania. <i>Szybsza reakcja poza biurem.</i></td>
+            <td class="why"><b>Biz value:</b> technik w terenie dyktuje notatkę lub tworzy zgłoszenie bez pisania.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Przekazanie do żywego technika (handoff)</b></td>
+            <td>Z czatu można przełączyć się na rozmowę z człowiekiem.</td>
+            <td><span class="badge ok">✅</span> „Need technician assistance”.</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why"><b>Biz value:</b> bez „ślepej uliczki” — płynna eskalacja trudnych spraw.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -205,7 +210,7 @@
             <td>Katalog usług i formularze dostępne w rozmowie.</td>
             <td><span class="badge ok">✅</span> Tak.</td>
             <td><span class="badge no">❌</span> Nie dotyczy.</td>
-            <td class="why"><b>Biz value:</b> mniej źle dobranych usług. <i>„Laptop dla grafika” → właściwy szablon i pytania o parametry.</i></td>
+            <td class="why"><b>Biz value:</b> mniej źle dobranych usług.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -214,7 +219,7 @@
             <td>W rozmowie proponuje artykuły i rozwiązania.</td>
             <td><span class="badge ok">✅</span> Na czacie.</td>
             <td><span class="badge ok">✅</span> W widoku ticketu.</td>
-            <td class="why"><b>Biz value:</b> część spraw znika od razu. <i>„Drukarka nie drukuje w kolorze” → 3 kroki i gotowe.</i></td>
+            <td class="why"><b>Biz value:</b> część spraw znika od razu.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -233,16 +238,16 @@
             <td>Dodaj notatkę, zmień priorytet, utwórz w imieniu użytkownika itd.</td>
             <td><span class="badge ok">✅</span> Tak.</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> mniej „klikania” — szybsza reakcja. <i>Technik z Teams podnosi priorytet i dopisuje notatkę.</i></td>
+            <td class="why"><b>Biz value:</b> mniej „klikania” — szybsza reakcja.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Raporty i dane przez rozmowę</b></td>
-            <td>„Ile mamy otwartych zgłoszeń wysokiego priorytetu?” — natychmiastowa odpowiedź.</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td>„Ile mamy otwartych zgłoszeń wysokiego priorytetu?” — odpowiedź w czacie.</td>
+            <td><span class="badge warn">🟡</span> Proste pytania tak; zaawansowane raporty zwykle przez Analytics Plus</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> decyzje na bazie aktualnych danych bez generowania raportu ręcznie.</td>
+            <td class="why"><b>Biz value:</b> decyzje bez ręcznego raportowania.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -250,10 +255,10 @@
           <tr>
             <td><b>Sugestie rozwiązań i streszczenia dla techników</b></td>
             <td>Podpowiedzi z historii i bazy wiedzy; skróty korespondencji.</td>
-            <td><span class="badge ok">✅</span> Tak (również z GenAI, jeśli włączone).</td>
+            <td><span class="badge warn">🟡</span> Dostępne (część funkcji zależy od wersji/integracji)</td>
             <td><span class="badge ok">✅</span> Tak (w widoku ticketu).</td>
-            <td class="why"><b>Biz value:</b> szybciej dojdziesz do sedna; mniej szukania po wiki i mailach.</td>
-            <td><b>Remis</b></td>
+            <td class="why"><b>Biz value:</b> szybciej dojdziesz do sedna.</td>
+            <td><b>RAG</b></td>
           </tr>
 
           <!-- Triage i klasyfikacja -->
@@ -262,7 +267,7 @@
             <td>Analiza treści nowego zgłoszenia i trafna klasyfikacja.</td>
             <td><span class="badge ok">✅</span> Po nauce na danych.</td>
             <td><span class="badge ok">✅</span> Sugestie w UI.</td>
-            <td class="why"><b>Biz value:</b> mniej błędnego routingu; lepsze dane do analizy trendów.</td>
+            <td class="why"><b>Biz value:</b> mniej błędnego routingu.</td>
             <td><b>Oba</b></td>
           </tr>
 
@@ -271,7 +276,7 @@
             <td>Predykcja właściwej grupy i technika na wejściu.</td>
             <td><span class="badge ok">✅</span> Tak (po nauce).</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> koniec „podbijania” ticketów między kolejkami; szybszy czas reakcji.</td>
+            <td class="why"><b>Biz value:</b> koniec „podbijania” ticketów między kolejkami.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -290,7 +295,7 @@
             <td>Identyfikuje sprawy zagrożone naruszeniem SLA.</td>
             <td><span class="badge ok">✅</span> Dostępne (widgety/alerty).</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> mniej kar umownych, lepsze dotrzymanie terminów. <i>„Za 60 min grozi SLA” → zespół reaguje zawczasu.</i></td>
+            <td class="why"><b>Biz value:</b> mniej kar umownych.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -299,7 +304,7 @@
             <td>Analiza odpowiedzi użytkownika po zamknięciu („dalej nie działa” → reopen).</td>
             <td><span class="badge ok">✅</span> Tak.</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> prawdziwe problemy nie giną, statystyki są rzetelne bez ręcznego sortowania maili.</td>
+            <td class="why"><b>Biz value:</b> rzetelne statystyki i brak „martwych” spraw.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -307,18 +312,18 @@
           <tr>
             <td><b>Integracje z Teams/Slack/Telegram</b></td>
             <td>Chatbot w komunikatorach firmowych (komendy, statusy, zgłoszenia).</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge ok">✅</span> Teams; inne możliwe przez wtyczki/webhooki.</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> IT pracuje tam, gdzie zespół rozmawia — szybsza reakcja, większa adopcja samoobsługi.</td>
+            <td class="why"><b>Biz value:</b> IT pracuje tam, gdzie zespół rozmawia.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Widżet Zia na intranecie</b></td>
             <td>Osadzony przycisk czatu z każdego serwisu wewnętrznego.</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge warn">🟡</span> Zależne od wersji/konfiguracji.</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> „pomoc IT” zawsze pod ręką; większe użycie samoobsługi.</td>
+            <td class="why"><b>Biz value:</b> „pomoc IT” zawsze pod ręką.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -326,25 +331,25 @@
           <tr>
             <td><b>Analiza nastroju w korespondencji</b></td>
             <td>Rozpoznaje ton (negatywny/neutralny/pozytywny) w rozmowie.</td>
-            <td><span class="badge ok">✅</span> Dostępne.</td>
+            <td><span class="badge warn">🟡</span> Często Cloud; w On-Prem zależne od wersji/integracji.</td>
             <td><span class="badge no">❌</span> Brak.</td>
-            <td class="why"><b>Biz value:</b> szybciej wychwycisz rosnącą frustrację i eskaluje się właściwie.</td>
+            <td class="why"><b>Biz value:</b> szybciej wychwycisz frustrację i eskalujesz właściwie.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Szkolenie modeli na danych firmy</b></td>
             <td>Ciągła nauka na lokalnych danych (intencje, kategorie, odpowiedzi).</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge ok">✅</span> Tak (po zasileniu danymi).</td>
             <td><span class="badge warn">🟡</span> RAG dopasowuje się semantycznie w UI (bez chatu).</td>
-            <td class="why"><b>Biz value:</b> z czasem coraz trafniejsze podpowiedzi i klasyfikacje.</td>
+            <td class="why"><b>Biz value:</b> z czasem coraz trafniejsze podpowiedzi.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Własne scenariusze rozmów (workflow)</b></td>
-            <td>Blended Conversations — dialog krok po kroku z automatyzacją.</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td>Dialog krok po kroku z automatyzacją (builder + webhooki).</td>
+            <td><span class="badge warn">🟡</span> Pełniej w Cloud; On-Prem możliwe ograniczenia/alternatywy przez custom actions.</td>
             <td><span class="badge no">❌</span> RAG to asystent w UI, nie bot.</td>
             <td class="why"><b>Biz value:</b> standaryzacja i skala bez zwiększania etatów.</td>
             <td><b>Zia</b></td>
@@ -353,18 +358,18 @@
           <tr>
             <td><b>Własne akcje i integracje (Developer Console)</b></td>
             <td>Akcje serverless (low-code), łączenie z systemami zewnętrznymi.</td>
-            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge ok">✅</span> Tak (zakres zależny od wersji).</td>
             <td><span class="badge no">❌</span> Brak orkiestracji.</td>
-            <td class="why"><b>Biz value:</b> automatyzacja szyta na miarę. <i>„Reset konta w AD” jednym zdaniem.</i></td>
+            <td class="why"><b>Biz value:</b> automatyzacja szyta na miarę.</td>
             <td><b>Zia</b></td>
           </tr>
 
           <tr>
             <td><b>Ask ChatGPT / Generatywna AI</b></td>
             <td>Nietypowe pytania do LLM; szkice odpowiedzi, tłumaczenia, streszczenia.</td>
-            <td><span class="badge ok">✅</span> Po włączeniu integracji.</td>
+            <td><span class="badge ok">✅</span> Po włączeniu integracji (API).</td>
             <td><span class="badge no">❌</span> Brak integracji jako bota.</td>
-            <td class="why"><b>Biz value:</b> bot rzadziej „nie wie”; technicy szybciej piszą dobre, jasne odpowiedzi.</td>
+            <td class="why"><b>Biz value:</b> bot rzadziej „nie wie”; technicy szybciej piszą jasne odpowiedzi.</td>
             <td><b>Zia</b></td>
           </tr>
 
@@ -401,7 +406,7 @@
             <td>Informuje o istniejącej podobnej sprawie do połączenia.</td>
             <td><span class="badge warn">🟡</span> Częściowo (zależnie od konfiguracji).</td>
             <td><span class="badge ok">✅</span> Wprost przy formularzu.</td>
-            <td class="why"><b>Biz value:</b> zamiast 40 osobnych spraw — jedna główna z przypiętymi zgłaszającymi.</td>
+            <td class="why"><b>Biz value:</b> zamiast 40 osobnych spraw — jedna główna.</td>
             <td><b>RAG</b></td>
           </tr>
 
@@ -443,10 +448,10 @@
 
           <tr>
             <td><b>Język polski i tryb lokalny</b></td>
-            <td>Działanie po polsku; dane pozostają on-prem.</td>
-            <td><span class="badge warn">🟡</span> Rozmowa po polsku zależna od ustawień.</td>
+            <td>Rozmowa/GUI po polsku (zależnie od ustawień).</td>
+            <td><span class="badge ok">✅</span> Lokalizacja interfejsu.</td>
             <td><span class="badge ok">✅</span> Podpowiedzi i streszczenia PL/EN.</td>
-            <td class="why"><b>Biz value:</b> mniejsza bariera językowa i łatwiejsza zgodność z bezpieczeństwem.</td>
+            <td class="why"><b>Biz value:</b> zgodność i mniejsza bariera językowa.</td>
             <td><b>RAG</b></td>
           </tr>
 
@@ -454,7 +459,6 @@
       </table>
     </div>
 
-    <!-- WERDYKT -->
     <div id="verdict" class="verdict">
       <h2>Werdykt końcowy — która opcja daje dziś większą wartość biznesową?</h2>
 
@@ -550,7 +554,7 @@
         </div>
 
         <div style="margin-top:12px">
-          <p><b>*Deflection</b>- to strategia obsługi klienta polegająca na przekierowywaniu zapytań od klientów do alternatywnych kanałów, zamiast do bezpośredniego kontaktu z agentem.</p>
+            <p><b>*Deflection</b>- to strategia obsługi klienta polegająca na przekierowywaniu zapytań od klientów do alternatywnych kanałów, zamiast do bezpośredniego kontaktu z agentem.</p>
           <p><b>Dlaczego taki wynik?</b> Najwięcej oszczędności daje warstwa konwersacyjna i automatyzacja na wejściu: samoobsługa, statusy, raporty, akceptacje, alerty SLA, dialogi wieloetapowe oraz integracje (Teams/Slack, intranet, głos). To obszary, w których Zia ma naturalną przewagę bota.</p>
           <p><b>Gdzie RAG jest lepszy?</b> W samej pracy z ticketem: jakość opisów, trafny tytuł, kontekst, podobne sprawy, streszczenia i prowadzenie krok-po-kroku + estymacja czasu. To skraca pracę technika i zmniejsza liczbę pomyłek — szczególnie ważne w polskojęzycznych zespołach.</p>
           <p><b>Rekomendacja:</b> jeśli celem jest <i>deflection i samoobsługa</i> — startuj od Zii. Jeśli celem jest <i>skrócenie czasu pracy technika</i> w ticketach i lepsza jakość danych — wdrażaj RAG. W praktyce u większości klientów najlepszy efekt daje <b>połączenie obu</b>.</p>
@@ -568,6 +572,8 @@
         Z kolei Zia jako chatbot świetnie obsługuje samoobsługę, statusy, raporty, akceptacje, automatyzację rozmów i alerty SLA, ale nie posiada dziś tak rozbudowanych podpowiedzi „w samym ticketcie” jak RAG (ocena jakości opisu, szczegółowa checklista z szacowanym czasem, wykrywanie kontekstu).
       </p>
     </details>
+
+    <p class="note">Pozycje oznaczone 🟡 są w On-Prem zależne od wersji i/lub integracji (np. Analytics Plus, developer console). Zweryfikuj dostępność na swojej instancji.</p>
   </div>
 </body>
 </html>
