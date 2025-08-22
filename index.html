@@ -1,137 +1,379 @@
-
 <!doctype html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Porównanie: Zia Chatbot vs Asystent RAG</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zia (SDP On-Prem) vs. Asystent RAG — porównanie + jak działa RAG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg:#f8f9fa; --fg:#212529; --muted:#6c757d;
-      --border:#dee2e6; --white:#fff;
-      --ok:#198754; --warn:#fd7e14; --no:#dc3545;
+    :root{
+      --bg:#0b1020; --fg:#e9ecef; --muted:#9aa4b2; --card:#141a2e; --border:#22304d;
+      --ok:#22c55e; --warn:#f59e0b; --no:#ef4444; --pill:#0ea5e9; --accent:#7dd3fc;
+      --container:1680px;
     }
-    body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--fg);margin:0;padding:24px;}
-    h1{margin:0 0 6px 0;font-weight:600;}
-    .subtitle{color:var(--muted);margin:0 0 20px 0;}
-    table{width:100%;border-collapse:collapse;background:var(--white);}
-    th,td{border:1px solid var(--border);padding:10px;vertical-align:top;text-align:left;}
-    thead th{background:#eef1f4;}
-    .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;color:#fff}
-    .ok{background:var(--ok);} .warn{background:var(--warn);} .no{background:var(--no);}
-    .legend{font-size:13px;color:var(--muted);margin-top:8px}
-    .foot{margin-top:20px;font-size:13px;color:var(--muted);}
-    @media (max-width:900px){
-      table, thead, tbody, th, td, tr{display:block}
-      thead{display:none}
-      tr{margin-bottom:12px;border:1px solid var(--border);background:var(--white)}
-      td{border:none;border-bottom:1px solid var(--border)}
-      td::before{content:attr(data-label) ": ";font-weight:600;display:block;margin-bottom:4px;color:#111}
-    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--fg);background:var(--bg);margin:0;line-height:1.65;font-size:16px}
+    .wrap{max-width:var(--container);margin:0 auto;padding:32px 28px}
+    h1{margin:0 0 10px;font-size:30px}
+    h2{margin:24px 0 10px;font-size:24px}
+    h3{margin:0 0 8px;font-size:18px}
+    .lead{color:var(--muted);margin:0 0 22px}
+    .legend{display:flex;align-items:center;gap:14px;margin:6px 0 16px;flex-wrap:wrap}
+    .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;color:#0b1020}
+    .ok{background:var(--ok)} .warn{background:var(--warn)} .no{background:var(--no)}
+    .pill{display:inline-block;padding:2px 10px;border:1px solid var(--border);border-radius:999px;color:#cbd5e1;font-size:12px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 18px}
+    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--border);border-radius:10px;color:#e2e8f0;text-decoration:none}
+    .btn:hover{background:rgba(255,255,255,0.04)}
+
+    .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:auto}
+    table{width:100%;border-collapse:separate;border-spacing:0;min-width:1200px}
+    colgroup col:nth-child(1){width:16%}
+    colgroup col:nth-child(2){width:24%}
+    colgroup col:nth-child(3){width:12%}
+    colgroup col:nth-child(4){width:16%}
+    colgroup col:nth-child(5){width:24%}
+    colgroup col:nth-child(6){width:8%}
+    thead th{position:sticky;top:0;z-index:2;background:#0f1733;color:#e9ecef;font-weight:700;text-align:left;padding:16px 18px;border-bottom:1px solid var(--border)}
+    tbody td{padding:16px 18px;border-bottom:1px solid var(--border);vertical-align:top;overflow-wrap:anywhere}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
+    .why{color:#cde4ff}
+    .note{color:var(--muted);font-size:13px;margin-top:8px}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0 8px}
+    .cards.two{grid-template-columns:repeat(2,1fr)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .card h3{font-size:17px}
+    .kpi{margin:8px 0 0;padding:10px;background:rgba(125,211,252,0.08);border:1px dashed #1f3b57;border-radius:10px}
+    .hr{height:1px;background:var(--border);margin:26px 0}
+    details{margin-top:8px}
+    summary{cursor:pointer;color:var(--accent)}
+    summary::-webkit-details-marker{display:none}
+
+    @media (max-width:1300px){ .cards{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:900px){ .wrap{padding:22px 16px} h1{font-size:26px} body{font-size:15px} .cards,.cards.two{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
-  <h1>Zia Chatbot (SDP On‑Prem) vs. Asystent RAG</h1>
-  <p class="subtitle">Aktualizacja porównania funkcji na podstawie oficjalnych materiałów ManageEngine.</p>
-  <table>
-    <thead>
-      <tr>
-        <th>Funkcja</th>
-        <th>Opis</th>
-        <th>Zia Chatbot</th>
-        <th>Asystent RAG</th>
-        <th>Werdykt</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Funkcja"><b>Interfejs i kanały</b><br><small>web, mobile, voice, widget</small></td>
-        <td data-label="Opis">Dostęp i obsługa w wielu kanałach (portal WWW, aplikacja mobilna, głos, widget/intranet).</td>
-        <td data-label="Zia"><span class="badge ok">✅</span> Web + mobile + Zia Voice + widget</td>
-        <td data-label="RAG"><span class="badge ok">✅</span> Dowolny kanał (widget, Teams/Slack, voice/API)</td>
-        <td data-label="Werdykt"><b>Remis</b> – Zia ma natywne kanały; RAG daje pełną elastyczność wdrożenia.</td>
-      </tr>
-      <tr>
-        <td><b>Operacje na zgłoszeniach</b></td>
-        <td>Tworzenie, modyfikacja, przypisanie, zadania, akceptacje z poziomu rozmowy.</td>
-        <td><span class="badge ok">✅</span> Predefiniowane akcje ITSM (twórz/modyfikuj/akceptuj)</td>
-        <td><span class="badge ok">✅</span> Tak (przez API/komendy); zakres zależny od integracji</td>
-        <td><b>Remis</b> – Zia natywnie w SDP; RAG elastycznie przez API.</td>
-      </tr>
-      <tr>
-        <td><b>Samoobsługa i KB</b></td>
-        <td>Rekomendacje artykułów oraz odpowiedzi generowane na podstawie wiedzy.</td>
-        <td><span class="badge ok">✅</span> KB + GenAI (RAG z cytatami)</td>
-        <td><span class="badge ok">✅</span> KB + RAG nad dokumentami klienta</td>
-        <td><b>Remis</b> – obie strony oferują GenAI + KB; różni się źródło i kontrola danych.</td>
-      </tr>
-      <tr>
-        <td><b>NL‑wyszukiwanie katalogu usług</b></td>
-        <td>Znajdowanie właściwej usługi po opisie w języku naturalnym i CTA.</td>
-        <td><span class="badge warn">🟡</span> Konwersacyjny dostęp/operacje w katalogu</td>
-        <td><span class="badge ok">✅</span> Semantyczne wyszukiwanie pozycji katalogu</td>
-        <td><b>Przewaga RAG</b> – lepsze dopasowanie intencji do pozycji katalogu.</td>
-      </tr>
-      <tr>
-        <td><b>Podsumowanie zgłoszeń</b></td>
-        <td>Streszczenie opisu, historii/konwersacji, kluczowych informacji.</td>
-        <td><span class="badge warn">🟡</span> Szybkie raporty/insighty z ticketów</td>
-        <td><span class="badge ok">✅</span> Podsumowania Issue/Steps/Outcome + Worklog</td>
-        <td><b>RAG wygrywa</b> – bogatsze, ustrukturyzowane summary.</td>
-      </tr>
-      <tr>
-        <td><b>Wsparcie operatora</b></td>
-        <td>Checklista kroków, podobne incydenty, kontekstowe podpowiedzi.</td>
-        <td><span class="badge warn">🟡</span> Możliwe przez flowy/akcje</td>
-        <td><span class="badge ok">✅</span> Automatyczne checklisty + podobne bilety</td>
-        <td><b>RAG wygrywa</b> – aktywne podpowiedzi w locie.</td>
-      </tr>
-      <tr>
-        <td><b>Duplikaty / Major Incident</b></td>
-        <td>Grupowanie podobnych zgłoszeń, wykrywanie MI.</td>
-        <td><span class="badge no">❌</span> Brak natywnej detekcji</td>
-        <td><span class="badge warn">🟡</span> Możliwe (embeddingi/klastry)</td>
-        <td><b>Przewaga RAG</b> – możliwość automatycznej detekcji po wdrożeniu.</td>
-      </tr>
-      <tr>
-        <td><b>Korelacja zmian → incydenty (24–48h)</b></td>
-        <td>Ranking „podejrzanych” zmian powiązanych z awarią.</td>
-        <td><span class="badge no">❌</span> Brak</td>
-        <td><span class="badge warn">🟡</span> Gotowe fundamenty; wymaga modułu korelacji</td>
-        <td><b>Przewaga RAG</b> – inteligentne hipotezy z uzasadnieniem.</td>
-      </tr>
-      <tr>
-        <td><b>Raporty NL (ad‑hoc)</b></td>
-        <td>„Ile High dziś?”, „Które przekroczyły SLA?” przez rozmowę.</td>
-        <td><span class="badge ok">✅</span> Proste raporty/quick insights</td>
-        <td><span class="badge ok">✅</span> Pełne zapytania ad‑hoc do danych ITSM</td>
-        <td><b>RAG wygrywa</b> – większa elastyczność zapytań.</td>
-      </tr>
-      <tr>
-        <td><b>Personalizacja / rozbudowa</b></td>
-        <td>Narzędzia do tworzenia scenariuszy i akcji, webhooki/API.</td>
-        <td><span class="badge ok">✅</span> Zia Developer Console + Actions Gallery</td>
-        <td><span class="badge ok">✅</span> Pełny custom (API, własne moduły)</td>
-        <td><b>Remis</b> – Zia: szybko/low‑code; RAG: pełna swoboda (wymaga dev).</td>
-      </tr>
-      <tr>
-        <td><b>Wielojęzyczność</b></td>
-        <td>Rozumienie/odpowiedzi w wielu językach.</td>
-        <td><span class="badge warn">🟡</span> Dokumentacja akcentuje EN; inne języki zależnie od konfiguracji</td>
-        <td><span class="badge ok">✅</span> Modele wielojęzyczne (PL/DE/EN)</td>
-        <td><b>Przewaga RAG</b> – gwarantowana obsługa PL/DE przy doborze modelu.</td>
-      </tr>
-      <tr>
-        <td><b>Bezpieczeństwo / PII</b></td>
-        <td>Kontrola danych, maskowanie PII, tryb on‑prem.</td>
-        <td><span class="badge warn">🟡</span> On‑prem dostępny; brak natywnej redakcji PII</td>
-        <td><span class="badge warn">🟡</span> On‑prem + moduł redakcji PII (konfigurowalny)</td>
-        <td><b>Przewaga RAG</b> – większa kontrola strumienia danych/PII.</td>
-      </tr>
-    </tbody>
-  </table>
-  <p class="legend"><b>Legenda:</b> <span class="badge ok">✅</span> dostępne &nbsp; <span class="badge warn">🟡</span> częściowo / zależne od konfiguracji &nbsp; <span class="badge no">❌</span> brak</p>
-  <p class="foot">Uwaga: Zia dostępna na Cloud i On‑Prem; szczegóły funkcji zależą od wersji i konfiguracji instancji. Niniejsze porównanie jest skrótem pod rozmowy handlowe.</p>
+  <div class="wrap">
+    <h1>Zia (ServiceDesk Plus On-Prem) vs. Asystent RAG — porównanie (stan obecny)</h1>
+    <p class="lead">Zaktualizowane o: Ticket Quality Score, Environment Detection, Similar tickets, AI Summary z proponowanymi krokami oraz <b>szacowany czas rozwiązania (ETA)</b>.</p>
+
+    <div class="btns">
+      <a class="btn" href="#how">Jak działa RAG w SDP (krok-po-kroku)</a>
+      <a class="btn" href="#core4">4 kluczowe funkcje RAG</a>
+      <a class="btn" href="#table">Tabela porównawcza</a>
+    </div>
+
+    <!-- NOWA SEKCJA: jak to działa -->
+    <h2 id="how">Jak działa Asystent RAG w SDP – w praktyce</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>Podczas <u>tworzenia</u> zgłoszenia (użytkownik)</h3>
+        <ul>
+          <li><b>Ticket Quality Score</b> – natychmiastowa ocena jakości opisu.</li>
+          <li><b>Lepszy tytuł i opis</b> – autosugestie w układzie <i>Problem → Kroki → Co próbowano</i>.</li>
+          <li><b>Kategorie & priorytet</b> – sugestie przypisania.</li>
+          <li><b>Environment Detection</b> – „chipsy” z wykrytymi faktami (Users: Multiple, Type: Login, Severity: Blocking itd.).</li>
+          <li><b>Similar tickets</b> – podpowiada podobne/duplikaty z podglądem rozwiązań.</li>
+        </ul>
+        <p class="kpi"><b>Business value:</b> mniej ping-pongu i błędów przy rejestracji, szybszy triage, mniej duplikatów.</p>
+      </div>
+      <div class="card">
+        <h3>Gdy <u>technik</u> otwiera ticket</h3>
+        <ul>
+          <li><b>AI Summary</b> – zwięzłe streszczenie: Issue / Steps Taken / Outcome + skrót workloga.</li>
+          <li><b>Action Checklist</b> – proponowane kroki z instrukcjami i paskiem postępu.</li>
+          <li><b>ETA</b> – szacowany czas rozwiązania na podstawie podobnych incydentów.</li>
+        </ul>
+        <p class="kpi"><b>Business value:</b> szybsze wejście w temat, spójna praca wg listy kontrolnej, lepsza komunikacja czasu z biznesem.</p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- 4 kluczowe funkcje (pozostają, bo odpowiadają briefowi sprzedażowemu) -->
+    <h2 id="core4">4 kluczowe funkcje RAG — skrót dla potencjalnego klienta</h2>
+    <div class="cards two">
+      <div class="card">
+        <h3>1) Wyszukiwanie usług po zwykłym języku (NL Service Catalog)</h3>
+        <p><b>Co robi:</b> „Potrzebuję dostępu do VPN / licencji Visio / laptopa do CAD” → RAG wskazuje właściwy wniosek.</p>
+        <p><b>Przykład:</b> „Monitor 27″ do MacBooka” → 2–3 trafne pozycje z katalogu + dopytania (lokalizacja, budżet).</p>
+        <p><b>Business value:</b> mniej błędnych wniosków, szybsza samoobsługa, mniejsze obciążenie L1.</p>
+      </div>
+      <div class="card">
+        <h3>2) „One-glance” podsumowanie zgłoszenia (AI Summary)</h3>
+        <p><b>Co robi:</b> ustrukturyzowane streszczenie (Issue / Steps / Outcome) + skrót długiego workloga.</p>
+        <p><b>Przykład:</b> 15 wpisów historii → 10–12 punktów „co jest, co zrobiono, co zostało”.</p>
+        <p><b>Business value:</b> szybsze przejęcia dyżuru i diagnoza → krótszy MTTR.</p>
+      </div>
+      <div class="card">
+        <h3>3) Podobne rozwiązania + wykrycie większego problemu</h3>
+        <p><b>Co robi:</b> pokazuje podobne, już rozwiązane sprawy i KB; przy fali podobnych incydentów sugeruje Major Incident/duplikaty.</p>
+        <p><b>Przykład:</b> „Błąd logowania do aplikacji X” → 8 podobnych w ostatniej godzinie + sprawdzone fixy.</p>
+        <p><b>Business value:</b> mniej wynajdywania koła, wcześniejsze wykrycie trendu, krótszy MTTR.</p>
+      </div>
+      <div class="card">
+        <h3>4) NL: wskaż zmiany/wnioski z 24h, które mogły wywołać awarię</h3>
+        <p><b>Co robi:</b> „Co z ostatnich 24h mogło zepsuć SSO?” → łączy zmiany/SR z CI/zdarzeniami i zwraca najbardziej prawdopodobne przyczyny z uzasadnieniem.</p>
+        <p><b>Przykład:</b> IdP patch 8:30 → korelacja z błędami logowania od 9:00.</p>
+        <p><b>Business value:</b> szybsza identyfikacja przyczyny (MTTI↓), krótszy przestój, lepszy materiał do PIR.</p>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- TABELA PORÓWNAWCZA -->
+    <div id="table" class="table-wrap">
+      <table>
+        <colgroup><col><col><col><col><col><col></colgroup>
+        <thead>
+          <tr>
+            <th>Temat</th>
+            <th>Co to znaczy w praktyce (prosto)</th>
+            <th>Zia (On-Prem)</th>
+            <th>Asystent RAG (dziś)</th>
+            <th>Dlaczego ważne (biz value + przykład)</th>
+            <th>Werdykt</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr>
+            <td><b>Typ rozwiązania</b></td>
+            <td>Chatbot vs. „silnik” w UI.</td>
+            <td><span class="badge ok">✅</span> Pełny chatbot / wirtualny agent.</td>
+            <td><span class="badge no">❌</span> Nie jest chatbotem; warstwa AI w UI SDP.</td>
+            <td class="why">Zia = konwersacyjny self-service. RAG = turbo dla pracy w ticketach.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Kanały</b></td>
+            <td>Web, mobile, <u>voice</u>, widget.</td>
+            <td><span class="badge ok">✅</span> Chat + Zia Voice (mobile) + widget.</td>
+            <td><span class="badge no">❌</span> Brak chatu/voice.</td>
+            <td class="why">Dostęp 24/7; mniejsze obciążenie L1.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Tworzenie incydentów/wniosków z chatu</b></td>
+            <td>Dialogowo zbiera pola i zakłada ticket/SR.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Nie dotyczy.</td>
+            <td class="why">Mniej klikania; szybki start obsługi.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Aktualizacja ticketów z chatu</b></td>
+            <td>Add note, task comment, proste akcje.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Nie dotyczy.</td>
+            <td class="why">Technik działa „z rozmowy”.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>„Moje zgłoszenia / status” w chacie</b></td>
+            <td>Lista i statusy, wyszukiwanie po kryteriach.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Nie dotyczy.</td>
+            <td class="why">Mniej kontaktów do L1.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Overdue / SLA w chacie</b></td>
+            <td>Szybkie listy naruszeń SLA.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Nie dotyczy.</td>
+            <td class="why">Priorytetyzacja pracy „na żywo”.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Pending approvals (chat & e-mail)</b></td>
+            <td>Lista i decyzje, parsing maili.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why">Szybsze akceptacje.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <!-- NOWE WIERSZE OD CIEBIE -->
+          <tr>
+            <td><b>Ticket Quality Score</b></td>
+            <td>Ocena jakości opisu + wskazówki co dodać.</td>
+            <td><span class="badge no">❌</span> Brak takiej funkcji.</td>
+            <td><span class="badge ok">✅</span> Score w czasie rzeczywistym.</td>
+            <td class="why">Mniej „pustych” ticketów, szybszy triage.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Title & AI-Enhanced Description</b></td>
+            <td>Lepszy tytuł i opis w czytelnym układzie.</td>
+            <td><span class="badge warn">🟡</span> Tekst asysty zależny od wersji.</td>
+            <td><span class="badge ok">✅</span> Jasna, gotowa propozycja.</td>
+            <td class="why">Skraca czas doprecyzowania.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Predykcja pól: C/SC/I, priorytet</b></td>
+            <td>ML uzupełnia kategorie i priorytet.</td>
+            <td><span class="badge ok">✅</span> Predykcje (po treningu).</td>
+            <td><span class="badge ok">✅</span> Sugestie semantyczne.</td>
+            <td class="why">Mniej przekazań; lepsze kolejkowanie.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Environment Detection</b></td>
+            <td>Automatyczne „chipsy” kontekstu (Users: Multiple, Severity: Blocking, Type: Login…).</td>
+            <td><span class="badge no">❌</span> Brak takiej sekcji w ticket view.</td>
+            <td><span class="badge ok">✅</span> Widoczne w panelu przy ticketcie.</td>
+            <td class="why">Szybciej rozumiesz skalę i charakter problemu.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Ostrzeżenie o duplikacie</b></td>
+            <td>„To już zgłoszono — podejrzyj”.</td>
+            <td><span class="badge warn">🟡</span> Częściowo przez clustering/problem.</td>
+            <td><span class="badge ok">✅</span> Wprost w panelu przy formularzu.</td>
+            <td class="why">Mniej dublowania, jedna sprawa zamiast pięciu.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>„Kto już to miał?” — podobne zgłoszenia</b></td>
+            <td>Podobne sprawy + co je zamknęło.</td>
+            <td><span class="badge warn">🟡</span> Clustering/problem (zależne).</td>
+            <td><span class="badge ok">✅</span> Semantycznie wprost w UI.</td>
+            <td class="why">Więcej rozwiązań „od ręki”, krótszy MTTR.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>AI Summary</b></td>
+            <td>Issue / Steps Taken / Outcome + skrót workloga.</td>
+            <td><span class="badge warn">🟡</span> Zależne od wersji/funkcji.</td>
+            <td><span class="badge ok">✅</span> Przy ticketcie.</td>
+            <td class="why">Szybsze wejście w temat i przekazania.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Action Checklist (z instrukcjami)</b></td>
+            <td>Kroki, ostrzeżenia, linki/komendy + pasek postępu.</td>
+            <td><span class="badge no">❌</span> Brak w ticket view.</td>
+            <td><span class="badge ok">✅</span> Interaktywna sekcja.</td>
+            <td class="why">Mniej błędów; powtarzalna jakość; szybsze zamknięcia.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>ETA – Szacowany czas rozwiązania</b></td>
+            <td>Przewidywany czas na podstawie podobnych incydentów.</td>
+            <td><span class="badge no">❌</span> Brak gotowej funkcji.</td>
+            <td><span class="badge ok">✅</span> Wyświetlany pod checklistą.</td>
+            <td class="why">Lepsze zarządzanie oczekiwaniami biznesu; planowanie pracy zespołu.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+          <tr>
+            <td><b>KB / Solutions</b></td>
+            <td>Proponowanie artykułów KB.</td>
+            <td><span class="badge ok">✅</span> Tak (w chacie).</td>
+            <td><span class="badge ok">✅</span> Tak (w widoku ticketu).</td>
+            <td class="why">Samoobsługa / szybkie zamknięcia.</td>
+            <td><b>Remis</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Automatyczny routing</b></td>
+            <td>Przewidywany Technician/Group.</td>
+            <td><span class="badge ok">✅</span> Tak (po treningu).</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why">Ticket trafia od razu „gdzie trzeba”.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Text/Reply Assist (dla technika)</b></td>
+            <td>Sugestie odpowiedzi, korekta, ton.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why">Szybsza, spójna komunikacja.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Sentiment analysis</b></td>
+            <td>🙂 / 😐 / ☹️ w rozmowach.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why">Widać rosnącą frustrację → reagujesz szybciej.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Post-Incident Review (PIR)</b></td>
+            <td>AI generuje raport PIR.</td>
+            <td><span class="badge ok">✅</span> Tak (dodatek/rozszerzenie).</td>
+            <td><span class="badge no">❌</span> Brak.</td>
+            <td class="why">Szybka dokumentacja i wnioski.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>Zia Developer Console</b></td>
+            <td>Low-code akcje, webhooki, scenariusze.</td>
+            <td><span class="badge ok">✅</span> Tak.</td>
+            <td><span class="badge no">❌</span> Brak (RAG = warstwa UI).</td>
+            <td class="why">Dopasowanie bota do procesów.</td>
+            <td><b>Zia</b></td>
+          </tr>
+
+          <tr>
+            <td><b>On-prem & języki</b></td>
+            <td>Dane lokalnie; język pracy.</td>
+            <td><span class="badge warn">🟡</span> Chat w praktyce EN-only.</td>
+            <td><span class="badge ok">✅</span> PL/EN w podpowiedziach i streszczeniach.</td>
+            <td class="why">Polski front: przewaga RAG w zespołach PL.</td>
+            <td><b>RAG</b></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hr"></div>
+
+    <!-- Dodatkowe karty o RAG (jak poprzednio, zostawiam wybrane najważniejsze) -->
+    <h2>Asystent RAG — dodatkowe korzyści i przykłady</h2>
+    <div class="cards">
+      <div class="card"><h3>Lepsze zgłoszenia od pierwszej minuty</h3><p><b>Co:</b> tytuł/opis + braki.</p><p><b>Przykład:</b> „Nie działa VPN” → „AUTH_FAILED”, kroki i brakujące dane.</p><p><b>Wartość:</b> mniej ping-pongu; szybszy triage.</p></div>
+      <div class="card"><h3>Interaktywna checklista</h3><p><b>Co:</b> kroki + ostrzeżenia + progres.</p><p><b>Przykład:</b> Outlook pętla logowania → MFA → profil → reset → test.</p><p><b>Wartość:</b> powtarzalna jakość, mniej błędów.</p></div>
+      <div class="card"><h3>ETA — ile to potrwa</h3><p><b>Co:</b> RAG szacuje czas bazując na podobnych incydentach.</p><p><b>Przykład:</b> „Connection pool exhausted” → 45–60 min (127 podobnych przypadków).</p><p><b>Wartość:</b> lepsze planowanie i komunikacja z biznesem.</p></div>
+    </div>
+
+    <div class="hr"></div>
+
+    <details>
+      <summary><b>Uczciwie o ograniczeniach (kliknij, by rozwinąć)</b></summary>
+      <p style="margin-top:8px">
+        Asystent RAG <b>nie jest chatbotem</b> (brak chatu/voice), <b>nie</b> przewiduje Technician/Group ani ryzyka zmian,
+        <b>nie</b> interpretuje Approve/Reject z e-maili i <b>nie</b> ma sentiment czy dashboardu AI/PIR. <br>
+        Z kolei Zia Bot w on-prem w praktyce wymaga <b>języka angielskiego</b> do konwersacji, a część funkcji generatywnych
+        może wymagać kontrolowanego dostępu do zewnętrznych LLM (API).
+      </p>
+    </details>
+
+   
+  </div>
 </body>
 </html>
